@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chatapp"
+dynamic = ["version"]
+description = 'chatapp'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "MrDataPsycho", email = "mr.data.psycho@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "openai==1.55.2",
+  "python-dotenv==1.0.1",
+]
+
+[project.urls]
+Documentation = "https://github.com/MrDataPsycho/chatapp#readme"
+Issues = "https://github.com/MrDataPsycho/chatapp/issues"
+Source = "https://github.com/MrDataPsycho/chatapp"
+
+[tool.hatch.version]
+path = "src/chatapp/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/chatapp tests}"
+
+[tool.coverage.run]
+source_pkgs = ["chatapp", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/chatapp/__about__.py",
+]
+
+[tool.coverage.paths]
+chatapp = ["src/chatapp", "*/chatapp/src/chatapp"]
+tests = ["tests", "*/chatapp/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.hatch.build.targets.wheel]
+sources = ["src"]
+only-include = ["src/chatapp"] # "src/agts/**/*"
+
+
+[project.scripts]
+chatapp = "chatapp.__main__:main"
