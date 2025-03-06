@@ -4,10 +4,15 @@ from dotenv import load_dotenv
 from openai import AzureOpenAI
 import streamlit as st
 
+# ENV_DIR = Path(".envs")
+# DEV_ENV_FILE_PATH = ENV_DIR / "dev.env"
+# load_dotenv(DEV_ENV_FILE_PATH, override=True)
+
 # Load environment variables
-ENV_DIR = Path().absolute().parent / ".env"
-DEV_ENV_FILE_PATH = ENV_DIR / "example.env"
-load_dotenv(DEV_ENV_FILE_PATH, override=True)
+ENV_DIR = Path().absolute() / ".env"
+DEV_ENV_FILE_PATH = ENV_DIR / "dev.env"
+x = load_dotenv(DEV_ENV_FILE_PATH, override=True)
+print(x)
 
 # Initialize Azure OpenAI client
 def initialize_client():
@@ -40,13 +45,6 @@ def chat_with_ai(client, query):
         response_content = response.choices[0].message.content
         st.write("### Chat completion response:")
         st.write(response_content)
-
-        embedding_response = client.embeddings.create(
-            input=query,
-            model=os.environ["AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME_ADA_SLN"]
-        )
-        st.write("### Embedding response:")
-        st.json(embedding_response.model_dump_json(indent=2))
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
